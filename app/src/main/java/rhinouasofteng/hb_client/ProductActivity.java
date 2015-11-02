@@ -74,8 +74,6 @@ public class ProductActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             try {
                 responseObject = responseArray.getJSONObject(0);
-                System.out.println("From ProductActivity PostExecute...");
-                System.out.println(responseObject.getString("ID"));
 
                 product_ID.setText(responseObject.getString("ID"));
                 product_Name.setText(responseObject.getString("name"));
