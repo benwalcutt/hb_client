@@ -57,7 +57,7 @@ public class InventoryActivity extends AppCompatActivity {
             }
         });
 
-        String url = "http://192.168.1.69:8080/hb_server/api0/products";
+        String url = "http://54.187.159.168:8080/hb_server/api0/products";
         new ContactServerTask().execute(url);
     }
 
@@ -95,10 +95,9 @@ public class InventoryActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-
+            HttpGet httppost = new HttpGet(params[0]);
+            HttpClient httpclient = new DefaultHttpClient();
             try {
-                HttpGet httppost = new HttpGet(params[0]);
-                HttpClient httpclient = new DefaultHttpClient();
                 HttpResponse response = httpclient.execute(httppost);
 
                 StatusLine stat = response.getStatusLine();
@@ -109,7 +108,19 @@ public class InventoryActivity extends AppCompatActivity {
                     String data = EntityUtils.toString(entity);
 
                     responseArray = new JSONArray(data);
-                    //System.out.println(obj);
+                    System.out.println(responseArray);
+                    for (int i = 0; i < responseArray.length(); i++) {
+                        responseObject = responseArray.getJSONObject(i);
+                        Product temp_product = new Product();
+                        temp_product.setID(UUID.fromString(responseObject.getString("ID")));
+                        temp_product.setName(responseObject.getString("name"));
+                        temp_product.setUnit(responseObject.getString("unit"));
+                        temp_product.setCost(responseObject.getDouble("cost"));
+                        temp_product.setCount(responseObject.getInt("count"));
+                        temp_product.setReorder(responseObject.getInt("reorder"));
+
+                        productList.add(temp_product);
+                    }
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -120,24 +131,6 @@ public class InventoryActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean result) {
 
-            try {
-                for (int i = 0; i < responseArray.length(); i++) {
-                    responseObject = responseArray.getJSONObject(i);
-                    Product temp_product = new Product();
-                    temp_product.setID(UUID.fromString(responseObject.getString("ID")));
-                    temp_product.setName(responseObject.getString("name"));
-                    temp_product.setUnit(responseObject.getString("unit"));
-                    temp_product.setCost(responseObject.getDouble("cost"));
-                    temp_product.setCount(responseObject.getInt("count"));
-                    temp_product.setReorder(responseObject.getInt("reorder"));
-
-                    productList.add(temp_product);
-                }
-
-                //IDText.setText(productList.get(0).getName());
-            } catch (Exception e) {
-                System.out.println(e);
-            }
         }
     }
 }
