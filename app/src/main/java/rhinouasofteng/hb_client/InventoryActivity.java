@@ -1,5 +1,6 @@
 package rhinouasofteng.hb_client;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +33,6 @@ import rhinouasofteng.hb_client.adapters.ProductAdapter;
 import rhinouasofteng.hb_client.models.Product;
 
 public class InventoryActivity extends AppCompatActivity {
-    //TextView IDText;
     ListView ProductListView;
     ProductAdapter productAdapter;
     List<Product> productList;
@@ -40,7 +42,6 @@ public class InventoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
-        //IDText = (TextView)this.findViewById(R.id.inventory_id);
         productList = new ArrayList<>();
         productAdapter = new ProductAdapter(this, this.productList);
         ProductListView = (ListView)this.findViewById(R.id.product_list_view);
@@ -57,7 +58,8 @@ public class InventoryActivity extends AppCompatActivity {
             }
         });
 
-        String url = "http://54.187.159.168:8080/hb_server/api0/products";
+        //String url = "http://54.187.159.168:8080/hb_server/api0/products";
+        String url = "http://localhost:8080/hb_server/api0/products";
         new ContactServerTask().execute(url);
     }
 
@@ -86,6 +88,29 @@ public class InventoryActivity extends AppCompatActivity {
     public void BackClick(View view) {
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(intent);
+    }
+
+    public void TestClick(View view) {
+        final Dialog testDialog = new Dialog(InventoryActivity.this);
+        testDialog.setContentView(R.layout.activity_main_dialog);
+        testDialog.setTitle("Test Dialog");
+        testDialog.setCancelable(true);
+
+        Button DoneButton = (Button)testDialog.findViewById(R.id.buttonDone);
+        DoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText testText = (EditText)testDialog.findViewById(R.id.editText);
+                String temp = testText.getText().toString();
+                displayText(Integer.parseInt(temp));
+            }
+        });
+        testDialog.show();
+    }
+
+    private void displayText(int input) {
+        TextView theMidView = (TextView)this.findViewById(R.id.textViewMid);
+        theMidView.setText(input);
     }
 
     private class ContactServerTask extends AsyncTask<String, Void, Boolean> {
@@ -122,6 +147,8 @@ public class InventoryActivity extends AppCompatActivity {
                         productList.add(temp_product);
                     }
                 }
+
+                productAdapter.notifyDataSetChanged();
             } catch (Exception e) {
                 System.out.println(e);
             }
