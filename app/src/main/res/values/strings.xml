@@ -6,4 +6,11 @@
     <string name="inventory_label">Inventory</string>
     <string name="title_activity_inventory">Inventory</string>
     <string name="title_activity_product">Product</string>
+
+    <string name="product_ID">ID</string>
+    <string name="product_name">Name</string>
+    <string name="product_count">Count</string>
+    <string name="product_reorder">Reorder</string>
+    <string name="title_activity_dialog_main">The Dialog</string>
+
 </resources>

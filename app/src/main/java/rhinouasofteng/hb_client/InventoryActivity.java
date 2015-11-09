@@ -58,8 +58,8 @@ public class InventoryActivity extends AppCompatActivity {
             }
         });
 
-        //String url = "http://54.187.159.168:8080/hb_server/api0/products";
-        String url = "http://localhost:8080/hb_server/api0/products";
+        String url = "http://54.187.159.168:8080/hb_server/api0/products";
+        //String url = "http://localhost:8080/hb_server/api0/products";
         new ContactServerTask().execute(url);
     }
 
@@ -120,10 +120,10 @@ public class InventoryActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            HttpGet httppost = new HttpGet(params[0]);
+            HttpGet httpGet = new HttpGet(params[0]);
             HttpClient httpclient = new DefaultHttpClient();
             try {
-                HttpResponse response = httpclient.execute(httppost);
+                HttpResponse response = httpclient.execute(httpGet);
 
                 StatusLine stat = response.getStatusLine();
                 int status = stat.getStatusCode();

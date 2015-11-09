@@ -34,7 +34,8 @@ public class ProductActivity extends AppCompatActivity {
         product_Count = (TextView)this.findViewById(R.id.product_Count);
         String incomingProductID = this.getIntent().getStringExtra("ID");
 
-        String url = "http://54.187.159.168:8080/hb_server/api0/products/" + incomingProductID;
+        //String url = "http://54.187.159.168:8080/hb_server/api0/products/" + incomingProductID;
+        String url = "http://localhost:8080/hb_server/api0/products/" + incomingProductID;
 
         new ContactServerTask().execute(url);
     }
